@@ -1,0 +1,58 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"><a href="{{base_url()}}admin/patches/create" class="btn btn-info">Add New</a></div>
+<div class="table_head"><h6><i class="icon-th"></i>Patches</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <th>ID</th>            
+            <th>Name</th>            
+            <th>Style SKU</th>            
+            <th>Fabric Name</th>            
+            <th>Fabric Color</th>            
+            <th>Fabric SKU</th>            
+            <th>Category</th>            
+            <th>Fabric Used(In Mtr.)</th>            
+            <th>Inventory</th>
+            <th>MRP</th>
+            <th>Details</th>           
+            <th>Date Created</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+		
+    <tbody>
+        {% for patch in patches %}
+            {% for fabric in patch.pfabrics %}
+            <tr>    
+                <td>{{patch.id}}</td>                
+                <td>{{patch.name}}</td>
+                <td>{{patch.style.style_sku}}</td>
+                <td>{{fabric.fabric.name}}</td>
+                <td>{{fabric.fabric.color}}</td>
+                <td>{{fabric.fabric.sku}}</td>
+                <td>{{patch.category}}</td>
+                <td>{{fabric.quantity|number_format(2,'.')}}</td>
+                <td>{{fabric.inventory|number_format(2,'.')}}</td>
+                <td>{{patch.mrp}}</td>                
+                <td>{{patch.details}}</td>                
+                <td>{{patch.created_at|date('m-d-Y')}}</td>              
+                <td><a href="{{ base_url()}}admin/patches/update/{{patch.id}}" class="btn btn-mini"><i class="icon-edit" title="Edit"></i></a></td>                
+				<td><a href="{{ base_url()}}admin/patches/delete/{{patch.id}}" class="btn btn-mini" onclick="return confirm_delete();"><i class="icon-trash" title="Delete"></i></a></td>
+            </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>    
+    </table>
+            <script>
+                function confirm_delete() {
+                    if(confirm("All related entries will be gone. Are you sure?"))
+                        return true;
+                    else
+                        return false;
+                }
+            </script>
+{% endblock %}

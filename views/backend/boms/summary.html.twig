@@ -1,0 +1,35 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"><a href="{{base_url()}}admin/boms/all" class="btn btn-info">Show Bom Sheet</a></div>
+<div class="table_head"><h6><i class="icon-th"></i>Fabric Summary</h6></div>
+
+<table class="table table-condensed table-bordered table-striped" id="fabsummary">
+    <thead>
+        <tr>     
+            <th>Date/Time</th>                       		
+            <th>Fabric</th> 
+            <th>Fabric Color</th> 
+            <th>RM Quantity(mtrs)</th>                       
+        </tr>
+    </thead>
+	<tfoot>
+		<tr>
+            <th colspan="3" style="text-align:right">Total Consumption :</th>	
+			<th></th>
+		</tr>
+	</tfoot>
+	
+    <tbody>
+        {% for bomsfabric in bomsfab %}
+		            <tr>   
+						<td>{{bomsfabric.order_date}}</td>									
+						<td>{{bomsfabric.fabric}}</td>                
+						<td>{{bomsfabric.fabric_color}}</td>                
+						<td>{{bomsfabric.totals}}</td> 
+					</tr>
+        {% endfor %}
+        </tbody>     
+    </table>
+{% endblock %}

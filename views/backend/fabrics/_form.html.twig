@@ -1,0 +1,56 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">
+        
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post"enctype="multipart/form-data">
+    {% if fabric %}<input type="hidden" name="id" value="{{fabric.id }}" />{% endif %}
+                <div class="row-fluid">
+                    <div class="span6 offset3">
+                        <fieldset>
+                            <legend>Add New Fabric</legend>
+                            <p>
+                                <label for="sku">SKU *</label>
+                                <input type="text" name="sku" id="location" placeholder="Fabric SKU" value="{% if fabric %}{{fabric.sku}}{% else %}{{set_value('sku')}}{% endif %}" class="input-block-level" {% if fabric %}disabled{% endif %}>
+                            </p>
+                           
+                            <p>
+                                <label for="name">Name *</label>
+                                <input type="text" name="name" id="name" placeholder="Name" value="{% if fabric %}{{fabric.name}}{% else %}{{set_value('name')}}{% endif %}" class="input-block-level">
+                            </p>
+                            <p>
+                                <label for="color">Color *</label>
+                                <input type="text" name="color" id="name" placeholder="color" value="{% if fabric %}{{fabric.color}}{% else %}{{set_value('color')}}{% endif %}" class="input-block-level">
+                            </p>
+                            <p>
+                                <label for="quantity">Quantity *</label>
+                                <input type="text" name="quantity" id="quantity" placeholder="Quantity" value="{% if fabric %}{{fabric.quantity}}{% else %}{{set_value('quantity')}}{% endif %}" class="input-block-level">
+                            </p>
+                            
+                            <p>
+                                <label for="release_percent">Release Percentage *</label>
+                                <select name="release_percent" class="input-block-level" id="release_percent">
+                                    {% for i in range(1, 100) %}
+                                        <option value="{{i}}" {% if fabric and fabric.release_percent == i %}selected{% endif %}>{{i}}%</option>
+                                    {% endfor %}
+                                </select>
+                                
+                            </p>
+                            <p>
+                                <label for="status">Staus</label>
+                                <select name="status" class="input-block-level">
+                                    {% for k,v in status %}
+                                        <option value="{{k}}">{{v}}</option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+                            <p><input type="submit" value="Save" class="btn btn-success" /></p>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

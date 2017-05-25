@@ -1,0 +1,188 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<style>
+.input-po{
+width:180px !important;
+}
+</style>
+<div class="row-fluid">    
+    <div class="row-fluid">
+        
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post"enctype="multipart/form-data">
+        {% if po %}<input type="hidden" name="id" value="{{po.id }}" />{% endif %}
+                <div class="row-fluid">
+                    <div class="span6 offset3">
+                        <fieldset>
+                            <legend>Add New</legend>
+                            <p>
+                                <label for="po_date">PO. Date </label>
+                                <input type="text" name="po_date" id="po_date" value="{% if po %}{{po.po_date}}{% else %}{{set_value('po_date')}}{% endif %}" class="input-block-level" >
+                            </p>
+                           
+                            <p>
+                                <label for="approval_date">Approval Date </label>
+                                <input type="text" name="approval_date" id="approval_date" value="{% if po %}{{po.approval_date}}{% else %}{{set_value('approval_date')}}{% endif %}" class="input-block-level">
+                            </p>
+                            <p>
+                                <label for="vendor_id">Vendor</label>
+								<select class="input-block-level" required="" name="vendor_id">
+								<option value="">Select</option>
+								{% for vendor in vendors %} 
+								<option value="{{vendor.id}}" {% if po and po.vendor_id == vendor.id %}selected{% endif %}>{{vendor.company_name}}</option>
+								{% endfor %}
+								</select>
+                            </p>
+							
+							
+							
+							<label for="fabric_id">Fabric , Quantity and Price </label>
+                            <div class="row-fluid" id="fab-box">
+                                {% if patch %}
+                                    {% for fabric in patch.pfabrics %}                                 
+                                    {% if loop.first %}
+                                     <p>                                        
+                                        <select name="fabric_id[]" class="input-large input-po" required>
+                                            <option value="">Select</option>
+                                                {% for fab in fabrics %}
+                                            <option value="{{fab.id}}" {% if fab.id == fabric.fabric_id %}selected{% endif %}>{{fab.name}} - ({{fab.color}})</option>
+                                                {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="pf_id[]" value="{{fabric.id}}" />
+                                        <input type="text" name="fabric_quantity[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)" value="{{fabric.quantity}}">                                        <input type="text" name="fabric_price[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)" value="{{fabric.price}}">
+                                    </p>
+                                    {% else %}
+                                    <p>                                        
+                                        <select name="fabric_id[]" class="input-large input-po" required>
+                                            <option value="">Select</option>
+                                                {% for fab in fabrics %}
+                                            <option value="{{fab.id}}" {% if fab.id == fabric.fabric_id %}selected{% endif %}>{{fab.name}} - ({{fab.color}})</option>
+                                                {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="pf_id[]" value="{{fabric.id}}" />
+                                        <input type="text" name="fabric_quantity[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)" value="{{fabric.quantity}}">                                        <input type="text" name="fabric_price[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)" value="{{fabric.price}}">
+                                    </p>
+                                    {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                <p>                                        
+                                    <select name="fabric_id[]" class="input-large input-po" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="fabric_quantity[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+                                    <input type="text" name="fabric_price[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                <p>
+                                    <i class="icon-remove pull-right close-fab"></i>
+                                    <select name="fabric_id[]" class="input-large input-po" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="fabric_quantity[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+                                    <input type="text" name="fabric_price[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                <p>
+                                    <i class="icon-remove pull-right close-fab"></i>
+                                    <select name="fabric_id[]" class="input-large input-po" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="fabric_quantity[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+                                    <input type="text" name="fabric_price[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                {% endif %}
+                            </div>
+                            <p><button class="btn" id="add-new-fab">Add More</button></p>                                
+                            </p>
+							
+
+
+							
+							<p>
+								<label for="status">Status</label>
+								<select class="input-block-level" required="" name="status">
+									<option value="Active" {% if po and po.status == 'Active' %}selected{% endif %}>Active</option>
+									<option value="Deactive" {% if po and po.vendor_id == 'Deactive' %}selected{% endif %}>Deactive</option>
+								</select>
+                            </p>							
+							<p>
+                                <label for="qc_status">QC Status</label>
+								<select class="input-block-level" required="" name="qc_status">
+									<option value="Pending" {% if po and po.qc_status == 'Pending' %}selected{% endif %}>Pending</option>
+									<option value="On Check" {% if po and po.qc_status == 'On Check' %}selected{% endif %}>On Check</option>
+									<option value="Rejected" {% if po and po.qc_status == 'Rejected' %}selected{% endif %}>Rejected</option>
+									<option value="Approved" {% if po and po.qc_status == 'Approved' %}selected{% endif %}>Approved</option>
+								</select>
+                            </p>																		
+							
+                            <p><input type="submit" value="Save" class="btn btn-success" /></p>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+	
+
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<script>	
+	$(function(){
+			$( "#po_date" ).datepicker();
+			$( "#approval_date" ).datepicker();
+	});
+	</script>
+	
+	
+<p id="sample-data" style="display: none;">                                        
+    <select name="fabric_id[]" class="input-large input-po" required>
+        <option value="">Select</option>
+            {% for fab in fabrics %}
+        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+            {% endfor %}
+    </select>
+    <input type="text" name="fabric_quantity[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+    <input type="text" name="fabric_price[]" class="input-large input-po" required onkeypress="return isNumberKey(event, this.value)">
+</p>
+
+	 <script type="text/javascript">
+	 
+        $(document).on('click', '#add-new-fab', function(e) {
+            e.preventDefault();
+            var data = $('#sample-data').html();            
+            $('#fab-box').append('<p><i class="icon-remove pull-right close-fab"></i>' + data + '</p>');
+        });
+        $(document).on('click', '.close-fab', function() {
+            $(this).parent('p').remove();
+        });
+
+        function isNumberKey(evt, val)
+        {
+            var charCode = (evt.which) ? evt.which : evt.keyCode
+
+            if (charCode === 46)
+            {                
+                if (val.indexOf('.') < 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+            {
+                return false;
+            }
+            return true;
+        }
+    </script>
+	
+{% endblock %}

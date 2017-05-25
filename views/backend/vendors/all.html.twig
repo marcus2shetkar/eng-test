@@ -1,0 +1,61 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+<ul>
+<li><a href="{{base_url()}}admin/vendors/create" class="btn btn-info">Add New</a></li>
+</ul>
+</div>
+<div class="table_head"><h6><i class="icon-th"></i>Vendors</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <th>Company Name</th>            
+            <th>Address</th>            
+            <th>Phone No</th>
+            <th>Contact Person</th>
+            <th>Mobile No.</th>
+            <th>Email</th>
+            <th>TIN</th>
+            <th>PAN</th>
+            <th>GST</th>
+            <th>CST</th>
+            <th>VAT</th>
+            <th>CESS</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vendor in vendors %}
+            <tr>    
+                <td>{{vendor.company_name}}</td>
+                <td>{{vendor.address_one}}, {{vendor.address_two}}, {{vendor.address_three}}, {{vendor.city}}, {{vendor.state}}, {{vendor.country}}, {{vendor.pin_code}} </td>
+                <td>{{vendor.phone_no}}</td>
+                <td>{{vendor.contact_person}}</td>
+                <td>{{vendor.con_per_mob}}</td>
+                <td>{{vendor.con_per_email}}</td>
+                <td>{{vendor.tin}}</td>
+                <td>{{vendor.pan}}</td>
+                <td>{{vendor.gst}}</td>
+                <td>{{vendor.cst}}</td>
+                <td>{{vendor.vat}}</td>
+                <td>{{vendor.cess}}</td>
+                             
+                
+				<td><a href="{{ base_url()}}admin/vendors/update/{{vendor.id}}" class="btn btn-mini"><i class="icon-edit" title="Edit"></i></a></td>				
+				<td><a href="{{ base_url()}}admin/vendors/delete/{{vendor.id}}" class="btn btn-mini" onclick="return confirm_delete();"><i class="icon-trash" title="Delete"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>    
+    </table>
+            <script>
+                function confirm_delete() {
+                    if(confirm("Are you sure?"))
+                        return true;
+                    else
+                        return false;
+                }
+            </script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"><a href="{{base_url()}}admin/boms/summary" class="btn btn-info">Show Fabric Summary</a></div>
+<div class="table_head"><h6><i class="icon-th"></i>Bom Sheet</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="bomdatatables">
+    <thead>
+        <tr>     
+            <th>Date/Time</th>                       		
+            <th>Size SKU</th>
+            <th>Style</th>            
+            <th>Color</th>            
+            <th>Fabric</th>                       
+            <th>Color</th>                       
+            <th>Unit Cons.(mtrs)</th>                       
+            <th>Total Cons.(mtrs)</th>                       
+            <th>Finish Goods (pcs)</th>                       
+        </tr>
+		<tr id="filterrow">
+            <th>Date/Time</th>                       		
+            <th>Size SKU</th>
+            <th>Style</th>            
+            <th>Color</th>            
+            <th>Fabric</th>                       
+            <th>Color</th>                       
+            <th>Unit Cons.(mtrs)</th>                       
+            <th>Total Cons.(mtrs)</th>                       
+            <th>Finish Goods (pcs)</th> 
+        </tr>
+    </thead>
+	<tfoot>
+		<tr>
+            <th colspan="5" style="text-align:right">Total Consumption :</th>	
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+	</tfoot>
+    <tbody>
+        {% for bom in boms %}
+		
+        {% set order = bom.size_sku %}		
+        {% set order_date = bom.order_date %}
+        {% set name = bom.style %}
+		
+		{% if (order == newid) and (order_date == newid_date) %}		
+		            <tr>   
+						<td><div class="hide-me">{{bom.order_date}}</div></td>									
+						<td><div class="hide-me">{{bom.size_sku}}</div></td>
+						<td><div class="hide-me">{{bom.style}}</div></td>
+						<td><div class="hide-me">{{bom.color}}</div></td>
+						<td >{{bom.fabric}}</td>  
+						<td>{{bom.fabric_color}}</td>                						
+						<td>{{bom.fabric_consumption|number_format(2,'.')}}</td> 
+						<td>{{(bom.qty*bom.fabric_consumption|number_format(2,'.'))}}</td> 
+						<td>0</td> 
+					</tr>
+        {% else %}
+				{% if name == new_name %}
+				<tr>
+				{% else %}
+				<tr class="dkbdr">
+                {% endif %}		
+				
+						<td>{{bom.order_date}}</td> 									
+						<td>{{bom.size_sku}}</td>
+						<td>{{bom.style}}</td>
+						<td>{{bom.color}}</td>
+						<td>{{bom.fabric}}</td>  
+						<td>{{bom.fabric_color}}</td>                						
+						<td>{{bom.fabric_consumption|number_format(2,'.')}}</td> 
+						<td>{{(bom.qty*bom.fabric_consumption|number_format(2,'.'))}}</td> 
+						<td>{{bom.qty}}</td> 
+					</tr>
+				{% set newid = bom.size_sku %}          
+				{% set newid_date = bom.order_date %}          
+				{% set new_name = bom.style %}          
+		{% endif %}
+        {% endfor %}
+        </tbody>     
+    </table>
+{% endblock %}

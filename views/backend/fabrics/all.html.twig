@@ -1,0 +1,60 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+<ul>
+<li><a href="{{base_url()}}admin/fabrics/create" class="btn btn-info">Add New</a></li>
+<li><a href="{{base_url()}}admin/fabrics/upload" class="btn btn-info">Import CSV</a></li>
+<li><a href="{{base_url()}}admin/fabrics/export" class="btn btn-info">Export CSV</a></li>
+</ul>
+</div>
+<div class="table_head"><h6><i class="icon-th"></i>Fabrics</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <td>ID</td>
+            <th>SKU</th>            
+            <th>Name</th>            
+            <th>Color</th>            
+            <th>Quantity (Release %)</th>            
+            <th>Release Percent</th>
+            <th>Ordered Quantity</th>
+            <th>Available</th>
+			 <th>Date Created</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fabric in fabrics %}
+            <tr>    
+                <td>{{fabric.id}}</td>
+                <td>{{fabric.sku}}</td>
+                <td>{{fabric.name}}</td>
+                <td>{{fabric.color}}</td>
+                <td>{{fabric.quantity|number_format(2,'.')}}&nbsp;&nbsp;({{(fabric.quantity*(fabric.release_percent/100))|number_format(2,'.')}})</td>
+                <td>{{fabric.release_percent|number_format(2,'.')}}</td>
+                <td>{{fabric.ordered_quantity|number_format(2,'.')}}</td>                              
+                <td>{{fabric.available_quantity|number_format(2,'.')}}</td>
+				<td>{{fabric.created_at|date('m-d-Y')}}</td> 
+
+                {% if fabric.status == 'active' %} {% set label = 'success' %} {% elseif fabric.status == 'inactive' %} {% set label = 'warning' %} {% endif %}
+                <td><a href="{{ base_url()}}admin/fabrics/status/{{fabric.id}}" class="btn btn-mini"><span class="label label-{{label}}">{{ucfirst(fabric.status)}}</span></a></td>  				
+
+                <td><a href="{{ base_url()}}admin/fabrics/update/{{fabric.id}}" class="btn btn-mini"><i class="icon-edit" title="Edit"></i></a></td>	                
+				<td><a href="{{ base_url()}}admin/fabrics/delete/{{fabric.id}}" class="btn btn-mini" onclick="return confirm_delete();"><i class="icon-trash" title="Delete"></i></a></td>				
+            </tr>
+        {% endfor %}
+        </tbody>    
+    </table>
+            <script>
+                function confirm_delete() {
+                    if(confirm("Are you sure?"))
+                        return true;
+                    else
+                        return false;
+                }
+            </script>
+{% endblock %}

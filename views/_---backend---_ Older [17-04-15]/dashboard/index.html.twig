@@ -1,0 +1,20 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+    <ul class="thumbnails">        
+        <li class="span2">
+          <a href="{{base_url()}}admin/setting" class="thumbnail">
+              <img src="{{base_url()}}assets/img/settings.png" alt="Setting" title="Setting" width="135">
+          </a>
+        </li>
+        <li class="span2">
+          <a href="{{base_url()}}admin/password" class="thumbnail">
+              <img src="{{base_url()}}assets/img/locked.png" alt="Change Password" title="Change Password" width="135">
+          </a>
+        </li>
+    </ul>
+</div>
+<div id="container" style="height: 400px; margin: 0 auto;" class="row-fluid"></div>
+{% endblock %}

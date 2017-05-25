@@ -1,0 +1,95 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+<ul>
+<li></li>
+</ul>
+</div>
+	<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <tbody>
+            <tr>    
+                <td colspan="3"><img src="{{base_url()}}assets/images/logo.png" alt="Kaaryah" title="Kaaryah" /></td>
+                <td colspan="2">
+				 <p>PO No : #{{ vpo.po_no }}</p>
+				 <p>PO Date : {{ vpo.po_date }}</p>
+				</td>                           
+            </tr> 
+			<tr>    
+                <td colspan="3">&nbsp</td>
+                <td colspan="2">&nbsp</td>                           
+            </tr>			
+			<tr>    
+                <td colspan="3"><h5>To</h5></td>
+                <td colspan="2"><h5>Ship To</h5></td>                           
+            </tr>			
+			<tr>    
+                <td colspan="3">
+					<p>Name : {{vendor.contact_person}}</p>
+					<p>Company : {{vendor.company_name}}</p>
+					<p>Address : {{vendor.address_one}}, {{vendor.address_two}}, {{vendor.address_three}}</p>
+					<p>{{vendor.city}}, {{vendor.state}}</p>
+					<p>Country : {{vendor.country}}, {{vendor.pin_code}}</p>
+					<p>Phone No : {{vendor.phone_no}}, {{vendor.con_per_mob}}</p>
+				</td>
+                <td colspan="2">
+					<p>Name : {{vendor.contact_person}}</p>
+					<p>Company : {{vendor.company_name}}</p>
+					<p>Address : {{vendor.address_one}}, {{vendor.address_two}}, {{vendor.address_three}}</p>
+					<p>{{vendor.city}}, {{vendor.state}}</p>
+					<p>Country : {{vendor.country}}, {{vendor.pin_code}}</p>
+					<p>Phone No : {{vendor.phone_no}}, {{vendor.con_per_mob}}</p>
+				</td>                           
+            </tr>
+			<tr>    
+                <td colspan="3">&nbsp</td>
+                <td colspan="2">&nbsp</td>                           
+            </tr>
+			<tr>    
+                <td><h6>Fabric Name</h6></td>
+                <td><h6>Fabric SKU</h6></td>
+                <td><h6>Quantity</h6></td>
+                <td><h6>Fabric Price</h6></td>                           
+                <td><h6>Total</h6></td>                           
+            </tr>
+		{% set subtotal = 0 %}
+        {% for po in po_rand %}			
+			<tr>    
+                <td>{{po.fabric_name}}</td>
+                <td>{{po.fabric_sku}}</td>
+                <td>{{po.fabric_quantity}}</td>
+                <td>Rs. {{po.fabric_price}}</td>                           
+                <td>Rs. {{(po.fabric_quantity * po.fabric_price)}}</td>  
+            {% set subtotal = subtotal + (po.fabric_quantity * po.fabric_price) %}				
+            </tr>
+	    {% endfor %}
+        	<tr>    
+                <td colspan="3">&nbsp</td>
+                <td colspan="2">&nbsp</td>                           
+            </tr>		
+			<tr>    
+                <td colspan="4" style="text-align:right">Sub Total</td>
+                <td>Rs. {{subtotal}}</td>                           
+            </tr>			
+			<tr>    
+                <td colspan="4" style="text-align:right">Sale Tax</td>
+                <td>
+				{% set tax = (subtotal*5/100) %}
+				Rs. {{tax}}</td>                           
+            </tr>			
+			<tr>    
+                <td colspan="4" style="text-align:right">Shipping & Handling</td>
+                <td>Rs. 50</td>                           
+            </tr>			
+			<tr>    
+                <td colspan="4" style="text-align:right">Others</td>
+                <td>Rs. 0.00</td>                           
+            </tr>			
+			<tr>    
+                <td colspan="4" style="text-align:right">Total</td>
+                <td>Rs. {{(subtotal+tax+50+0.00)}}</td>                           
+            </tr>	                           
+        </tbody>    
+    </table>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"><a href="{{base_url()}}admin/sample_order/export" class="btn btn-success">Export</a> &nbsp;&nbsp;<a href="{{base_url()}}admin/sample_order/create" class="btn btn-info">Add New</a></div>
+<div class="table_head"><h6><i class="icon-th"></i>Sample Orders</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <td>ID</td>            
+            <th>Sample SKU</th>            
+            <th>Sample Name</th>  
+            <th>Color</th>                     			
+            <th>Category</th>                     			
+            <th>Fabric Used</th>            
+            <th>Fabric Color</th>            
+            <th>Used Quantity</th>
+            <th>Finish Quantity</th>
+            <th>Date</th>  
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}            
+            <tr>    
+                <td>{{order.id}}</td>                
+                <td>{{order.sample_sku}}</td>
+                <td>{{order.sample_name}}</td>
+				<td>{{order.color}}</td>
+				<td>{{order.category}}</td>				
+                <td>{{order.fabric.name}}</td>
+				<td>{{order.fabric.color}}</td>
+                <td>{{order.quantity}}</td>
+                <td>{{order.finish_quantity}}</td>               
+                <td>{{order.created_at|date('m-d-Y')}}</td>  		
+            </tr>
+           
+        {% endfor %}
+        </tbody>    
+    </table>
+            <script>
+                function confirm_delete() {
+                    if(confirm("All related entries will be gone. Are you sure?"))
+                        return true;
+                    else
+                        return false;
+                }
+            </script>
+{% endblock %}{# empty Twig template #}
