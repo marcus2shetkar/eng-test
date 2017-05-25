@@ -1,0 +1,125 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">        
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post"enctype="multipart/form-data"> 
+            <div class="row-fluid">
+                <div class="span6 offset3">
+                    <fieldset>
+                        <legend></legend>
+                        <p>
+                            <label for="sample_sku">Sample SKU *</label>
+                            <input type="text" name="sample_sku" value="" class="input-block-level"/>
+                        </p>
+                        <p>
+                            <label for="sample_name">Sample Name *</label>
+                            <input type="text" name="sample_name" value="" class="input-block-level"/>
+                        </p>
+                         <p>
+                            <label for="fabric_id">Fabric and quantity *</label>
+                            <div class="row-fluid" id="fab-box">                                
+                                <p>                                        
+                                    <select name="fabric_id[]" class="input-large" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.sku}}</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                <p>
+                                    <i class="icon-remove pull-right close-fab"></i>
+                                    <select name="fabric_id[]" class="input-large" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.sku}}</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                <p>
+                                    <i class="icon-remove pull-right close-fab"></i>
+                                    <select name="fabric_id[]" class="input-large" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.sku}}</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>                                
+                            </div>
+                         <p><button class="btn" id="add-new-fab">Add More</button></p>                                
+                        </p>
+                        
+                     
+                        <p>
+                            <label for="color">Color *</label>
+                            <input type="text" name="color" value="" class="input-block-level"/>
+                        </p>
+						<p>
+                            <label for="finish_quantity">Finish Quantity *</label>
+                            <input type="text" name="finish_quantity" value="" class="input-block-level"/>
+                        </p>
+						<p>
+						    <label for="category">Category </label>
+							<select class="input-block-level" required="" name="category">
+							<option value="">Select</option>
+							{% for cat in categories %} 
+							<option value="{{cat.name}}" {% if size and size.size_category == cat.name %}selected{% endif %}>{{cat.name}}</option>
+							{% endfor %}
+							</select>
+						</p>
+                        <p>
+                            <input type="submit" name="submit" class="btn btn-success" value="Update" />
+                        </p>
+
+                    </fieldset>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block bottom %}
+<p id="sample-data" style="display: none;">                                        
+    <select name="fabric_id[]" class="input-large" required>
+        <option value="">Select</option>
+            {% for fab in fabrics %}
+        <option value="{{fab.id}}">{{fab.sku}}</option>
+            {% endfor %}
+    </select>
+    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+</p>
+<script type="text/javascript">
+        $(document).on('click', '#add-new-fab', function(e) {
+            e.preventDefault();
+            var data = $('#sample-data').html();            
+            $('#fab-box').append('<p><i class="icon-remove pull-right close-fab"></i>' + data + '</p>');
+        });
+        $(document).on('click', '.close-fab', function() {
+            $(this).parent('p').remove();
+        });
+
+        function isNumberKey(evt, val)
+        {
+            var charCode = (evt.which) ? evt.which : evt.keyCode
+
+            if (charCode === 46)
+            {                
+                if (val.indexOf('.') < 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+            {
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}

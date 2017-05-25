@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>    
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="{{ base_url()}}assets/css/bootstrap-wysihtml5.css" rel="stylesheet" media="screen">
+        <link href="{{ base_url()}}assets/css/bootstrap.css" rel="stylesheet" media="screen">
+        <link href="{{ base_url()}}assets/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+        <link href="{{ base_url()}}assets/css/custom.css" rel="stylesheet" media="screen">
+        <link href="{{ base_url()}}assets/css/datepicker.css" rel="stylesheet" media="screen">
+        <link href="{{ base_url()}}assets/css/dataTables.tableTools.css" rel="stylesheet" media="screen">
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+      <div class="container-fluid">
+          <div class="row-fluid">
+              <div class="left-nav span2">
+                  <div class="user-profile">
+                      <a href="{{base_url()}}"><img src="{{base_url()}}/assets/images/logo.png" /></a>
+                  </div>
+                  <ul class="main-left-nav">
+                      {% set current_url = uri_string() | split('/') %}                                            
+                      {% for module in left_menu %}
+                        {% set module_url = module.link | split('/') %}
+                        <li {% if current_url[1] == module_url[1] %} class="left-active" {% endif %}><a href="{{base_url() ~ module.link}}"><i class="icon-white {{module.icon}}"></i> {{ucfirst(module.name)}}</a></li>
+                      {% endfor %}
+                        <li><a href="{{ base_url()}}auth/logout"><i class="icon-white icon-off"></i> Log Out</a></li>
+                  </ul>
+              </div>
+              <div class="span10">
+                  <div class="row-fluid">
+                      <div class="breadcrumb">{{set_breadcrumb() | raw}} <span class="pull-right"><a href="{{ base_url()}}auth/logout" class="btn btn-mini"><i class="icon-off"></i> Log Out</a></span></div>
+                      
+                      {% block content %}
+
+                      {% endblock %}
+                  </div>                  
+              </div>
+          </div>
+              
+      </div>
+      
+	 
+    <script src="{{ base_url()}}assets/js/jquery.min.js"></script>
+    <script src="{{ base_url()}}assets/js/bootstrap.min.js"></script>    
+    <script src="{{ base_url()}}assets/js/wysihtml5-0.3.0_rc2.min.js"></script>    
+    <script src="{{ base_url()}}assets/js/bootstrap-wysihtml5.js"></script> 
+    <script src="{{ base_url()}}assets/js/bootstrap-datepicker.js"></script>
+	<!--<script src="{{ base_url()}}assets/js/jquery.dataTables.min.js"></script>-->
+	<script src="{{ base_url()}}assets/js/jquery.datatables.min.js"></script>
+	<script src="{{ base_url()}}assets/js/dataTables.tableTools.js"></script>
+	<script src="{{ base_url()}}assets/js/dataTables.scroller.js"></script>
+	<!--script src="{{ base_url()}}assets/js/custom.js"></script-->
+
+<style>
+
+#orderstable input {
+	border-radius: 0;
+	height: 10px;
+	width: 75px;
+	margin: 0px;
+	font-size: 10px;
+}
+#orderstable_filter{
+   display:none;
+}
+	
+.paginate_button {
+	background: none repeat scroll 0 0 #f9f9f9;
+	border: 1px solid lightgray;
+	color: #000;
+	margin: 2px;
+	padding: 0 5px;
+}
+
+.btn {
+	border-radius: 0;
+	padding: 2px 5px;
+	font-size: 12px;
+}
+
+.dataTables_wrapper {
+	font-size: 0.8em;
+}	
+
+.notification {
+	width: 800px !important;
+}
+	
+#filterrow th.sorting input, #filterrow th.sorting_asc input, #filterrow th.sorting_desc input, #filterrow th.sorting_disabled input {
+    font-size: 10px;
+    height: 10px;
+    margin: 0 auto;
+    width: 80px !important;
+}
+
+.dkbdr td{
+	border-top: 1px solid #969696 !important;
+}
+tfoot td{
+	border-top: 2px solid #969696 !important;
+}
+tfoot td {
+	border-bottom: 2px solid #969696 !important;
+}
+
+.ltbdr td{
+    border-top: 1px solid #dddddd !important;
+}
+
+.hide-me {
+    visibility: hidden;
+}
+#bomdatatables th, #bomdatatables td {
+    border-left: 1px solid #969696 !important;
+}
+
+#bomdatatables_filter {
+    display: none !important;
+}
+
+#bomdatatables {
+    border: 1px solid #969696 !important;
+}
+#bomdatatables thead{
+   border-bottom: 1px solid #969696 !important;
+}
+
+#bomdatatables th, #bomdatatables td {
+line-height: 15px;
+}
+
+table a.btn-mini span.label {
+    font-size: 10px !important;
+    line-height: 10px !important;
+    padding: 5px 10px !important;
+    width: 40px !important;
+	border-radius: 0px !important;
+}
+
+@media print
+{
+	.dkbdr td{
+		border-top: 1px solid #969696 !important;
+	}
+	tfoot td{
+		border-top: 2px solid #969696 !important;
+	}
+	tfoot td {
+		border-bottom: 2px solid #969696 !important;
+	}
+	table {
+		border-collapse: collapse;
+		border-spacing: 0;
+	}
+	.table th, .table td {
+    line-height: 30px;
+	}
+}
+
+
+</style>
+
+<script>
+
+
+$('a.trigger-modal').on('click', function(e) {
+	e.preventDefault();
+	var url = $(this).attr('href');
+	$('.modal-data').load(url);
+}); 
+  
+$(document).ready(function() {
+	$('#datatables').dataTable({
+	"bLengthChange": false,
+	"iDisplayLength":12,
+	"sDom": 'T<"clear">lfrtip',
+	"tableTools": {
+		"sSwfPath": "{{base_url()}}/assets/images/copy_csv_xls_pdf.swf"
+	}
+	});
+	
+	var table = $('#bomdatatables').DataTable( {
+	"bLengthChange": false,
+	"iDisplayLength":12,
+	"bSort" : false,
+	"sDom": 'T<"clear">lfrtip',
+	"tableTools": {
+	"sSwfPath": "{{base_url()}}/assets/images/copy_csv_xls_pdf.swf"
+	},
+
+	"footerCallback": function (nRow, aasData, iStart, iEnd, aiDisplay ) {                   
+	$($(nRow).children()).remove();										 
+			if(iEnd > 0) {       
+				for(var i=0;i<aasData[0].length;i++){                       
+				var a= document.createElement('td');                   
+				$(a).html('');                                         
+				$(nRow).append(a);									
+				}                                                          
+			var columnas=[ 8, 9];           
+			for(var j in columnas){                                   
+			var columnaActual= columnas[j];                        
+			var total=0;                                           
+				for(var i=iStart;i<iEnd;i++){                           
+					total=total+parseFloat(aasData[aiDisplay[i]][columnaActual]);
+				}                                                              
+			$($(nRow).children().get(columnaActual)).html(total.toFixed(2));          
+			}                                     
+		}
+	}
+    });
+
+	$('#fabsummary').dataTable({
+		"bLengthChange": false,
+		"iDisplayLength":12,
+		"aaSorting": [[ 0, "asc" ]],
+		"sDom": 'T<"clear">lfrtip',
+		"tableTools": {
+		"sSwfPath": "{{base_url()}}/assets/images/copy_csv_xls_pdf.swf"
+		},
+		"orderCellsTop": true,
+		"scrollX": true,
+
+		"footerCallback": function (nRow, aasData, iStart, iEnd, aiDisplay ) {                   
+		$($(nRow).children()).remove();										 
+			if(iEnd > 0) {       
+				for(var i=0;i<aasData[0].length;i++){                       
+				var a= document.createElement('td');                   
+				$(a).html('');                                         
+				$(nRow).append(a);								
+				}                                                          
+			var columnas=[3];               
+				for(var j in columnas) {                                   
+				var columnaActual= columnas[j];                        
+				var total=0;                                           
+					for(var i=iStart;i<iEnd;i++){                           
+						total=total+parseFloat(aasData[aiDisplay[i]][columnaActual]);
+					}                                                              
+				$($(nRow).children().get(columnaActual)).html(total.toFixed(2));          
+				}                                     
+			}
+		}
+	});
+
+	var fullDate = new Date();
+	var title=$('title').text()
+
+	$('.DTTT_button_print').on ('click' , function(){
+		  $('.dataTable').before( '<div style="border:2px solid lightgray"></div><div style="width:80%; float:left"><h4>KAARYAH Lifestyle Solutions Pvt. Ltd.</h4><p>178 Udyog Vihar, Phase -1</p><p>Gurgaon , Haryana 122 004</p></div><div style="width:20%; float:left"><h4>'+title+'</h4><p>Date : '+ fullDate +' </p></div> <div style="border:1px solid lightgray; float:left; width:100%; margin-bottom:20px"></div>' );		
+	});
+
+	$('#bomdatatables thead tr#filterrow th').each( function () {
+		var title = $('#bomdatatables thead th').eq( $(this).index() ).text();
+		$(this).html( '<input type="text" onclick="stopPropagation(event);" placeholder="Search '+title+'" />' );
+	} );
+
+	$("#bomdatatables thead input").on( 'keyup change', function () {
+		table
+		.column( $(this).parent().index()+':visible' )
+		.search( this.value )
+		.draw();
+	} );
+
+	function stopPropagation(evt) {
+		if (evt.stopPropagation !== undefined) {
+		evt.stopPropagation();
+		} else {
+		evt.cancelBubble = true;
+		}
+	}	
+
+    $('#orderstable thead th').each( function () {        
+	var title = $('#orderstable tfoot th').eq( $(this).index() ).text();        
+	$(this).html( '<input type="text" placeholder="Search '+title+'" />' );    
+	} );
+    
+	var table = $('#orderstable').DataTable({
+                "bLengthChange": false,
+                "iDisplayLength":12,
+				"sDom": 'T<"clear">lfrtip',
+				"tableTools": {
+					"sSwfPath": "{{base_url()}}/assets/images/copy_csv_xls_pdf.swf"
+				}
+            });
+			
+		table.columns().eq( 0 ).each( function ( colIdx ) {        
+			$( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {            
+			table.column(colIdx).search( this.value )                
+			.draw();        
+		} );   
+	} );
+} );
+
+
+</script>
+
+	
+    <div class="modal hide fade modal-data" id="my_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          
+    </div>
+    {% if message %}
+    <div class="notification notification-{{message[0]}}"><div><span>{{message[1]}}</span></div></div>
+    {% endif %}
+    {% block bottom %}
+    {% endblock %}
+                
+  </body>
+</html>

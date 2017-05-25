@@ -1,0 +1,40 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+<ul>
+<li><a href="{{base_url()}}admin/category/create" class="btn btn-info">Add New</a></li>
+
+</ul>
+</div>
+<div class="table_head"><h6><i class="icon-th"></i>Categories</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <td>ID</td>
+            <th>Name</th>            
+             <th>Edit</th>
+             <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in categories %}
+            <tr>    
+                <td>{{category.id}}</td>
+                <td>{{category.name}}</td>
+                <td><a href="{{ base_url()}}admin/category/update/{{category.id}}" class="btn btn-mini"><i class="icon-edit" title="Edit"></i></a></td>                
+				<td><a href="{{ base_url()}}admin/category/delete/{{category.id}}" class="btn btn-mini" onclick="return confirm_delete();"><i class="icon-trash" title="Delete"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>    
+    </table>
+            <script>
+                function confirm_delete() {
+                    if(confirm("Are you sure?"))
+                        return true;
+                    else
+                        return false;
+                }
+            </script>
+{% endblock %}

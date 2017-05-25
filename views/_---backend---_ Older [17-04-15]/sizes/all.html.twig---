@@ -1,0 +1,58 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+<div class="row-fluid">
+	<ul>
+		<li><a href="{{base_url()}}admin/sizes/upload/" class="btn btn-success">Import CSV</a></li>
+		<li><a href="{{base_url()}}admin/sizes/export/" class="btn btn-success">Export</a></li>
+	</ul>
+</div>
+
+<div class="table_head"><h6><i class="icon-th"></i>Sizes</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <td>ID</td>            
+            <th>Size SKU</th>            
+            <th>Style Name</th>            
+            <th>Style SKU</th>            
+			<th>Category</th>          
+            <th>MFG Inventory</th>            
+            <th>FG Stock</th>
+            <th>Trial Studio</th>
+            <th>Total</th>           
+            <th>Date Created</th>    
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for size in sizes %}            
+            <tr>    
+                <td>{{size.id}}</td>                
+                <td>{{size.size_sku}}</td>
+                <td>{{size.style_name}}</td>
+                <td>{{size.style.style_sku}}</td>                
+				<td>{{size.	size_category}}</td>
+                <td>{{floor(size.inventory)}}</td>
+                <td>{{floor(size.fg_stock)}}</td>
+                <td>{{floor(size.trial_studio)}}</td>
+
+                <td>{{floor(size.total)}}</td>                
+                <td>{{size.created_at|date('m-d-Y')}}</td>     
+                <td><a href="{{ base_url()}}admin/sizes/update/{{size.id}}" class="btn btn-mini"><i class="icon-edit" title="Edit"></i></a></td>
+            </tr>
+           
+        {% endfor %}
+        </tbody>    
+    </table>
+            <script>
+                function confirm_delete() {
+                    if(confirm("All related entries will be gone. Are you sure?"))
+                        return true;
+                    else
+                        return false;
+                }
+            </script>
+{% endblock %}{# empty Twig template #}

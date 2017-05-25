@@ -1,0 +1,41 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"><a href="{{base_url()}}admin/orders/create" class="btn btn-info">Upload New</a></div>
+<div class="table_head"><h6><i class="icon-th"></i>Orders</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <th>Channel Name</th>
+            <th>Order ID</th>
+            <th>Style Name</th>			
+			<th>Size SKU</th>         
+			<th>Category</th>         
+			<th>Color</th>         
+            <th>Quantity</th>
+			<th>Selling Price</th> 
+			<th>FG</th> 
+			<th>TS</th> 
+            <th>Created Date</th>                       
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr>    
+                <td>{{order.channel_name}}</td>
+				<td>{{order.order}}</td>
+				<td>{{order.style_name}}</td>
+                <td>{{order.size.size_sku}}</td>
+                <td>{{order.category}}</td>
+                <td>{{order.color}}</td>
+                <td>{{order.quantity}}</td>
+				<td>{{order.selling_price}}</td>
+				<td>{% if (order.fg == 'available') %} <i class="icon-ok-circle"></i>[FG]{% endif %}</td>
+				<td>{% if (order.trial_studio == 'available') %} <i class="icon-ok-circle"></i>[TS]{% endif %}</td>
+                <td>{{order.created_at|date('m/d/Y')}}</td>                
+            </tr>
+        {% endfor %}
+        </tbody>    
+    </table>
+{% endblock %}

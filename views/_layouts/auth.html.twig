@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+        <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="{{ base_url()}}assets/css/bootstrap.css" rel="stylesheet" media="screen">
+        <link href="{{ base_url()}}assets/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+      {% block content %}
+          
+      {% endblock %}
+    <script src="{{ base_url()}}assets/js/jquery.min.js"></script>
+    <script src="{{ base_url()}}assets/js/bootstrap.min.js"></script>
+  </body>
+</html>

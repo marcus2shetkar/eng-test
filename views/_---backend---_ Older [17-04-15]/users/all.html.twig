@@ -1,0 +1,36 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"><a href="{{base_url()}}admin/users/create" class="btn btn-info">Add New</a></div>
+<div class="table_head"><h6><i class="icon-th"></i>Users</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <td>ID</td>
+            <th>Name</th>            
+            <th>Email</th>            
+            <th>Status</th>             
+            <th>Admin</th>
+            <th>Date</th>
+            <th>Last Login</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>    
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                {% if user.status == 'active' %} {% set label = 'success' %} {% elseif user.status == 'inactive' %} {% set label = 'warning' %} {% endif %}
+                <td><span class="label label-{{label}}">{{ucfirst(user.status)}}</span></td>                
+                <td>{% if (user.group_id == 2) %} <i class="icon-ok-circle"></i> {% endif %}</td>
+                <td>{{user.created_at|date('m-d-Y')}}</td>
+                <td>{% if user.last_login %}{{user.last_login|date('m-d-Y H:i:s')}} {% endif %}</td>
+                <td><a href="{{ base_url()}}admin/users/delete/{{user.id}}" class="btn btn-mini"><i class="icon-trash" title="Delete"></i></a>&nbsp;<a href="{{ base_url()}}admin/users/update/{{user.id}}" class="btn btn-mini"><i class="icon-edit" title="Edit"></i></a></td>
+            </tr>
+        {% endfor %}
+        </tbody>    
+    </table>
+{% endblock %}

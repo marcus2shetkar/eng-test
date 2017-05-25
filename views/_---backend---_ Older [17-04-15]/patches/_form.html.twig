@@ -1,0 +1,164 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">
+
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post" enctype="multipart/form-data" id="patch-form">
+    {% if patch %}<input type="hidden" name="id" value="{{patch.id }}" />{% endif %}
+                <div class="row-fluid">
+                    <div class="span6 offset3">
+                        <fieldset>
+                            <legend>Add New Patch</legend>
+                            <p>
+                                <label for="name">Name *</label>
+                                <input type="text" name="name" id="name" placeholder="Patch Name" value="{% if patch %}{{patch.name}}{% else %}{{set_value('name')}}{% endif %}" class="input-block-level" required>
+                            </p>
+							<p>
+                                <label for="mrp">MRP *</label>
+                                <input type="text" name="mrp" id="mrp" placeholder="Maximum Retail Price" value="{% if patch %}{{patch.mrp}}{% else %}{{set_value('mrp')}}{% endif %}" class="input-block-level">
+                            </p>
+                            <p>
+                            <label for="fabric_id">Fabric and quantity *</label>
+                            <div class="row-fluid" id="fab-box">
+                                {% if patch %}
+                                    {% for fabric in patch.pfabrics %}                                 
+                                    {% if loop.first %}
+                                     <p>                                        
+                                        <select name="fabric_id[]" class="input-large" required>
+                                            <option value="">Select</option>
+                                                {% for fab in fabrics %}
+                                            <option value="{{fab.id}}" {% if fab.id == fabric.fabric_id %}selected{% endif %}>{{fab.name}} - ({{fab.color}})</option>
+                                                {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="pf_id[]" value="{{fabric.id}}" />
+                                        <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)" value="{{fabric.quantity}}">
+                                    </p>
+                                    {% else %}
+                                    <p>                                        
+                                        <select name="fabric_id[]" class="input-large" required>
+                                            <option value="">Select</option>
+                                                {% for fab in fabrics %}
+                                            <option value="{{fab.id}}" {% if fab.id == fabric.fabric_id %}selected{% endif %}>{{fab.name}} - ({{fab.color}})</option>
+                                                {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="pf_id[]" value="{{fabric.id}}" />
+                                        <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)" value="{{fabric.quantity}}">
+                                    </p>
+                                    {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                <p>                                        
+                                    <select name="fabric_id[]" class="input-large" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                <p>
+                                    <i class="icon-remove pull-right close-fab"></i>
+                                    <select name="fabric_id[]" class="input-large" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                <p>
+                                    <i class="icon-remove pull-right close-fab"></i>
+                                    <select name="fabric_id[]" class="input-large" required>
+                                        <option value="">Select</option>
+                                            {% for fab in fabrics %}
+                                        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+                                            {% endfor %}
+                                    </select>
+                                    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+                                </p>
+                                {% endif %}
+                            </div>
+                            <p><button class="btn" id="add-new-fab">Add More</button></p>                                
+                            </p>
+
+                            <p>
+                                <label for="style_sku">Style SKU *</label>
+                                <input type="text" name="style_sku" id="style_sku" placeholder="Style SKU" value="{% if patch %}{{patch.style.style_sku}}{% else %}{{set_value('style_sku')}}{% endif %}" class="input-block-level" required {% if patch %}readonly{% endif %}>
+                            </p>
+                            <p>
+                                <label for="color">Color *</label>
+                                <input type="text" name="color" id="color" placeholder="Color" value="{% if patch %}{{patch.style.color}}{% else %}{{set_value('quantity')}}{% endif %}" class="input-block-level" required {% if patch %}readonly{% endif %}>
+                            </p>
+
+                            <p>
+                                <label for="details">Details</label>
+                                <textarea name="details" class="input-block-level">{% if patch %}{{patch.details}}{% else %}{{set_value('details')}}{% endif %}</textarea>                                
+                            </p>
+                            <p>
+                                <label for="size_type">Size Type *</label>
+                                <select name="size_type" class="input-block-level" required {% if patch %}disabled{% endif %}>
+                                    <option value="">Select</option>
+                                    {% for type in types %}
+                                    <option value="{{type.type}}" {% if patch.style.size_type() == type.type %} selected {% endif %}>{{type.type}}</option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+							<p>
+						    <label for="category">Category </label>
+							<select class="input-block-level" required="" name="category">
+							<option value="">Select</option>
+							{% for cat in categories %} 
+							<option value="{{cat.name}}" {% if size and size.size_category == cat.name %}selected{% endif %}>{{cat.name}}</option>
+							{% endfor %}
+							</select>
+						    </p>
+                            <p><input type="submit" value="Save" class="btn btn-success" /></p>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block bottom %}
+<p id="sample-data" style="display: none;">                                        
+    <select name="fabric_id[]" class="input-large" required>
+        <option value="">Select</option>
+            {% for fab in fabrics %}
+        <option value="{{fab.id}}">{{fab.name}} - ({{fab.color}})</option>
+            {% endfor %}
+    </select>
+    <input type="text" name="quantity[]" class="input-large" required onkeypress="return isNumberKey(event, this.value)">
+</p>
+    <script type="text/javascript">
+        $(document).on('click', '#add-new-fab', function(e) {
+            e.preventDefault();
+            var data = $('#sample-data').html();            
+            $('#fab-box').append('<p><i class="icon-remove pull-right close-fab"></i>' + data + '</p>');
+        });
+        $(document).on('click', '.close-fab', function() {
+            $(this).parent('p').remove();
+        });
+
+        function isNumberKey(evt, val)
+        {
+            var charCode = (evt.which) ? evt.which : evt.keyCode
+
+            if (charCode === 46)
+            {                
+                if (val.indexOf('.') < 1)
+                {
+                    return true;
+                }
+                return false;
+            }
+            if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+            {
+                return false;
+            }
+            return true;
+        }
+    </script>
+{% endblock %}

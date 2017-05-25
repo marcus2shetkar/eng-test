@@ -1,0 +1,69 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">
+        <div class="row-fluid">
+            <h4>Settings</h4>
+        </div>
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post"enctype="multipart/form-data">
+    {% if setting %}<input type="hidden" name="id" value="{{setting.id }}" />{% endif %}
+                <div class="row-fluid">
+                    <div class="span6">
+                        <fieldset>
+                            <legend>General Settings</legend>
+
+                            <p>
+                                <label for="setting_name">Website Title *</label>
+                                <input type="text" name="base_title" id="setting_name" placeholder="Base Title" value="{% if setting %}{{setting.base_title}}{% endif %}" class="input-block-level" required>
+                            </p>
+                            <p>
+                                <label for="admin_name">Admin Name *</label>
+                                <input type="text" name="admin_name" id="admin_name" placeholder="Admin Name" value="{% if setting %}{{setting.admin_name}}{% endif %}" class="input-block-level" required>
+                            </p>
+                            <p>
+                                <label for="admin_mail">Admin Email *</label>
+                                <input type="text" name="admin_mail" id="admin_mail" placeholder="Admin Email" value="{% if setting %}{{setting.admin_mail}}{% endif %}" class="input-block-level" required>
+                            </p>
+                            <p>
+                                <label for="email">Website Email *</label>
+                                <input type="text" name="email" id="email" placeholder="Email" value="{% if setting %}{{setting.email}}{% endif %}" class="input-block-level" required>
+                            </p>
+                           
+                        </fieldset>
+                    </div>
+                    <div class="span6">
+                        
+                        <fieldset>
+                            <legend>SEO Settings</legend>
+                            <p>
+                                <label for="setting_description">Analytics code *</label>
+                                <textarea name="analytic_code" class="input-block-level" id="setting_description">{% if setting %}{{setting.analytic_code}}{% endif %}</textarea>
+                            </p>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Contact</legend>
+                             <p>
+                                <label for="address">Address</label>
+                                <input type="text" name="address" id="address" placeholder="Address" value="{% if setting %}{{setting.address}}{% endif %}" class="input-block-level" >
+                            </p>
+                            <p>
+                                <label for="phone1">Phone 1</label>
+                                <input type="text" name="phone1" id="phone1" placeholder="Phone 1" value="{% if setting %}{{setting.phone1}}{% endif %}" class="input-block-level">
+                            </p>
+                            <p>
+                                <label for="phone2">Phone 2</label>
+                                <input type="text" name="phone2" id="phone2" placeholder="Phone 2" value="{% if setting %}{{setting.phone2}}{% endif %}" class="input-block-level">
+                            </p>
+                        </fieldset>
+
+                        <p>
+                            <input type="submit" name="submit" class="btn btn-success" value="Update" />
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

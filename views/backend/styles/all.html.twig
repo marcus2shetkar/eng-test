@@ -1,0 +1,49 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"></div>
+<div class="table_head"><h6><i class="icon-th"></i>Styles</h6></div>
+<table class="table table-condensed table-bordered table-striped style-table" id="datatables">
+    <thead>
+        <tr>            
+            <th>ID</th>            
+            <th>Name</th>            
+            <th>SKU</th>            
+            <th>Color</th>            
+            <th>Patch Name(Id)</th>
+            <th>MRP</th> 
+            <th>Inventory</th> 
+            <th>Category</th>					
+            <th>Date Created</th>            
+            <th>Status</th>            
+        </tr>
+    </thead>
+    <tbody>
+        {% for style in styles %}            
+            <tr>    
+                <td>{{style.id}}</td>                
+                <td>{{style.name}}</td>
+                <td>{{style.style_sku}}</td>
+                <td>{{style.color}}</td>
+                <td>{{style.patch.name}}({{style.patch.id}})</td>
+                <td>{{floor(style.style_mrp)}}</td>           
+                <td>{{floor(style.inventory)}}</td>   
+                <td>{{style.style_category}}</td>				
+                <td>{{style.created_at|date('m-d-Y')}}</td> 
+                {% if style.status == 'active' %} {% set label = 'success' %} {% elseif style.status == 'inactive' %} {% set label = 'warning' %} {% endif %}				
+                <td><a href="{{ base_url()}}admin/styles/status/{{style.id}}" class="btn btn-mini"><span class="label label-{{label}}">{{ucfirst(style.status)}}</span></a></td>  				
+            </tr>
+           
+        {% endfor %}
+        </tbody>    
+    </table>
+            <script>
+                function confirm_delete() {
+                    if(confirm("All related entries will be gone. Are you sure?"))
+                        return true;
+                    else
+                        return false;
+                }
+            </script>
+{% endblock %}{# empty Twig template #}

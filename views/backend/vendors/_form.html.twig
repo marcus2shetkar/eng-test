@@ -1,0 +1,97 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">
+        
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post"enctype="multipart/form-data">
+        {% if vendor %}<input type="hidden" name="id" value="{{vendor.id }}" />{% endif %}
+                <div class="row-fluid">
+                    <div class="span6 offset3">
+                        <fieldset>
+                            <legend>Add New Vendor</legend>
+                            <p>
+                                <label for="company_name">Company Name *</label>
+                                <input type="text" name="company_name" id="company_name" placeholder="Company Name" value="{% if vendor %}{{vendor.company_name}}{% else %}{{set_value('company_name')}}{% endif %}" class="input-block-level" >
+                            </p>
+                           
+                            <p>
+                                <label for="address_one">Address One *</label>
+                                <input type="text" name="address_one" id="address_one" placeholder="Address One" value="{% if vendor %}{{vendor.address_one}}{% else %}{{set_value('address_one')}}{% endif %}" class="input-block-level">
+                            </p>
+                            <p>
+                                <label for="address_two">Address Two </label>
+                                <input type="text" name="address_two" id="address_two" placeholder="Address Two" value="{% if vendor %}{{vendor.address_two}}{% else %}{{set_value('address_two')}}{% endif %}" class="input-block-level">
+                            </p>
+                            <p>
+                                <label for="address_three">Address Three </label>
+                                <input type="text" name="address_three" id="address_three" placeholder="Address Three" value="{% if vendor %}{{vendor.address_three}}{% else %}{{set_value('address_three')}}{% endif %}" class="input-block-level">
+                            </p>                            
+							<p>
+                                <label for="city">City</label>
+                                <input type="text" name="city" id="city" placeholder="City" value="{% if vendor %}{{vendor.city}}{% else %}{{set_value('city')}}{% endif %}" class="input-block-level">
+                            </p>							
+							<p>
+                                <label for="state">State</label>
+                                <input type="text" name="state" id="state" placeholder="State" value="{% if vendor %}{{vendor.state}}{% else %}{{set_value('state')}}{% endif %}" class="input-block-level">
+                            </p>							
+							<p>							
+							<p>
+                                <label for="country">Country</label>
+                                <input type="text" name="country" id="country" placeholder="Country" value="{% if vendor %}{{vendor.country}}{% else %}{{set_value('country')}}{% endif %}" class="input-block-level">
+                            </p>							
+                                <label for="pin_code">Pin Code</label>
+                                <input type="text" name="pin_code" id="pin_code" placeholder="Pin Code" value="{% if vendor %}{{vendor.pin_code}}{% else %}{{set_value('pin_code')}}{% endif %}" class="input-block-level">
+                            </p>
+							
+							<p>
+                                <label for="phone_no">Phone Number</label>
+                                <input type="text" name="phone_no" id="phone_no" placeholder="Phone Number" value="{% if vendor %}{{vendor.phone_no}}{% else %}{{set_value('phone_no')}}{% endif %}" class="input-block-level">
+                            </p>							
+							<p>
+                                <label for="contact_person">Contact Person</label>
+                                <input type="text" name="contact_person" id="contact_person" placeholder="Contact Person" value="{% if vendor %}{{vendor.contact_person}}{% else %}{{set_value('contact_person')}}{% endif %}" class="input-block-level">
+                            </p>							
+							<p>
+                                <label for="con_per_mob">Mobile No.</label>
+                                <input type="text" name="con_per_mob" id="con_per_mob" placeholder="Mobile No." value="{% if vendor %}{{vendor.con_per_mob}}{% else %}{{set_value('con_per_mob')}}{% endif %}" class="input-block-level">
+                            </p>							
+							<p>
+                                <label for="con_per_email">Email-Id</label>
+                                <input type="text" name="con_per_email" id="con_per_email" placeholder="Email-Id" value="{% if vendor %}{{vendor.con_per_email}}{% else %}{{set_value('con_per_email')}}{% endif %}" class="input-block-level">
+                            </p>
+							
+							<p>
+                                <label for="tin">TIN No.</label>
+                                <input type="text" name="tin" id="tin" placeholder="TIN" value="{% if vendor %}{{vendor.tin}}{% else %}{{set_value('tin')}}{% endif %}" class="input-block-level">
+                            </p>								
+							<p>
+                                <label for="pan">PAN No.</label>
+                                <input type="text" name="pan" id="pan" placeholder="PAN" value="{% if vendor %}{{vendor.pan}}{% else %}{{set_value('pan')}}{% endif %}" class="input-block-level">
+                            </p>								
+							<p>
+                                <label for="gst">GST No.</label>
+                                <input type="text" name="gst" id="gst" placeholder="GST" value="{% if vendor %}{{vendor.gst}}{% else %}{{set_value('gst')}}{% endif %}" class="input-block-level">
+                            </p>								
+							<p>
+                                <label for="cst">CST No.</label>
+                                <input type="text" name="cst" id="cst" placeholder="CST" value="{% if vendor %}{{vendor.cst}}{% else %}{{set_value('cst')}}{% endif %}" class="input-block-level">
+                            </p>														
+							<p>
+                                <label for="tin">VAT No.</label>
+                                <input type="text" name="vat" id="vat" placeholder="VAT" value="{% if vendor %}{{vendor.vat}}{% else %}{{set_value('vat')}}{% endif %}" class="input-block-level">
+                            </p>							
+							<p>
+                                <label for="cess">CESS No.</label>
+                                <input type="text" name="cess" id="cess" placeholder="CESS" value="{% if vendor %}{{vendor.cess}}{% else %}{{set_value('cess')}}{% endif %}" class="input-block-level">
+                            </p>							
+							
+                            <p><input type="submit" value="Save" class="btn btn-success" /></p>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

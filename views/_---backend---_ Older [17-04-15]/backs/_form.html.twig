@@ -1,0 +1,41 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">       
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post" enctype="multipart/form-data">
+        {% if back %}<input type="hidden" name="id" value="{{back.id }}" />{% endif %}
+                <div class="row-fluid">
+                    <div class="span6 offset3">
+                        <fieldset>
+                            <legend>Add New Item</legend>
+                            <p>
+                                <label for="order_id">Order Id*</label>
+                                <input type="text" name="order_id" id="order_id" placeholder="Order Id" value="{% if back %}{{back.order_id}}{% else %}{{set_value('order_id')}}{% endif %}" class="input-block-level">
+                            </p>                            
+							<p>
+                                <label for="size_sku">Size SKU*</label>
+                                <input type="text" name="size_sku" id="size_sku" placeholder="Size SKU" value="{% if back %}{{back.size_sku}}{% else %}{{set_value('size_sku')}}{% endif %}" class="input-block-level">
+                            </p>							
+							<p>
+                                <label for="fg">Finish Good</label>
+								<select class="input-block-level" required="" name="fg">
+								<option value="0">Select</option>
+								<option value="0" {% if back and back.fg == 0 %}selected{% endif %}>QC Reject</option>								
+								<option value="1" {% if back and back.fg == 1 %}selected{% endif %}>FG</option>							
+								</select>
+                            </p>												
+							<p>
+                                <label for="reason">Reason </label>
+                                <input type="text" name="reason" id="reason" placeholder="Reason" value="{% if back %}{{back.reason}}{% else %}{{set_value('reason')}}{% endif %}" class="input-block-level">
+                            </p>
+
+                            <p><input type="submit" value="Save" class="btn btn-success" /></p>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

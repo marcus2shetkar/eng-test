@@ -1,0 +1,85 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+<a style="float:left; margin-right:30px;" href="{{base_url()}}admin/boms/summary" class="btn btn-info">Show Fabric Summary</a>
+<form action="{{base_url()}}admin/boms/search" method="post" enctype="multipart/form-data">
+	Search by Date:  <input type="text" name="search" value="" style="margin-bottom: 0px; padding: 2px 6px;" />
+	<input type="submit" value="Search" class="btn btn-info" />
+</form>
+</div>
+
+
+
+<table class="table table-condensed table-bordered table-striped" id="bomdatatables">
+    <thead>
+        <tr>     
+			<th style="width: 10%;">Date/Time</th>
+			<th style="width: 10%;">Style SKU</th>
+			<th style="width: 15%;">Sizes</th>
+			<th style="width: 10%;">Style</th>
+			<th style="width: 10%;">Color</th>
+			<th style="width: 15%;">Fabric</th>
+			<th style="width: 15%;">Color</th>
+			<th style="width: 3%;">Unit Cons.(mtrs)</th>
+			<th style="width: 3%;">Total Cons.(mtrs)</th>
+			<th style="width: 3%;">MFG (pcs)</th>			
+        </tr>
+    </thead>
+	<tfoot style="border-top: 2px solid #969696">
+		<tr>
+            <th colspan="6" style="text-align:right">Total Consumption :</th>	
+			<th></th>
+			<th></th>
+			<th></th>
+		</tr>
+	</tfoot>
+    <tbody>
+        {% for bom in boms %}
+		
+        {% set order = bom.size_sku %}		
+        {% set order_date = bom.order_date %}
+        {% set name = bom.style %}
+        {% set style_sku = (bom.style_sku)  %}
+		{% set style_sku = style_sku ~ '-' %}
+		
+		{% if (order == newid) and (order_date == newid_date) %}		
+		            <tr>   
+						<td><div class="hide-me">{{bom.order_date}}</div></td>									
+						<td><div class="hide-me">{{bom.style_sku}}</div></td>
+						<td><div class="hide-me">{{str_replace(style_sku, "", bom.size_sku)}}</div></td>
+						<td><div class="hide-me">{{bom.style}}</div></td>
+						<td><div class="hide-me">{{bom.color}}</div></td>
+						<td >{{bom.fabric}}</td>  
+						<td>{{bom.fabric_color}}</td>                						
+						<td>{{bom.fabric_consumption|number_format(2,'.')}}</td> 
+						<td>{{(bom.qty*bom.fabric_consumption|number_format(2,'.'))}}</td> 
+						<td>0</td> 
+					</tr>
+        {% else %}
+				{% if name == new_name %}
+				<tr class="ltbdr">
+				{% else %}
+				<tr class="dkbdr">
+                {% endif %}		
+				
+						<td>{{bom.order_date}}</td> 									
+						<td>{{bom.style_sku}}</td>
+						<td>{{str_replace(style_sku, "", bom.size_sku)}}</td>
+						<td>{{bom.style}}</td>
+						<td>{{bom.color}}</td>
+						<td>{{bom.fabric}}</td>  
+						<td>{{bom.fabric_color}}</td>                						
+						<td>{{bom.fabric_consumption|number_format(2,'.')}}</td> 
+						<td>{{(bom.qty*bom.fabric_consumption|number_format(2,'.'))}}</td> 
+						<td>{{bom.qty}}</td> 
+					</tr>
+				{% set newid = bom.size_sku %}          
+				{% set newid_date = bom.order_date %}          
+				{% set new_name = bom.style %}          
+		{% endif %}
+        {% endfor %}
+        </tbody>     
+    </table>
+{% endblock %}

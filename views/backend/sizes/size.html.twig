@@ -1,0 +1,38 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">        
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post"enctype="multipart/form-data"> 
+            <input type="hidden" name="id" value="{{size.id}}" />
+            <div class="row-fluid">
+                <div class="span6 offset3">
+                    <fieldset>
+                        <legend>FG Value</legend>
+                        <p>
+                            <label for="size_sku">Size SKU</label>
+                            <input type="text" name="size_sku" value="{{size.size_sku}}" class="input-block-level" disabled/>
+                        </p>
+                        <p>
+                            <label for="fg_stock">FG Stock *</label>
+                            <input type="text" name="fg_stock" value="{{size.fg_stock}}" class="input-block-level"/>
+                        </p>
+                         <p>
+                            <label for="trial_studio">Trial Studio *</label>
+                            <input type="text" name="trial_studio" value="{{size.trial_studio}}" class="input-block-level"/>
+                        </p>
+                        <p>
+                            <input type="submit" name="submit" class="btn btn-success" value="Update" />
+                        </p>
+
+
+
+                    </fieldset>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

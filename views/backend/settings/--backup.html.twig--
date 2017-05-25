@@ -1,0 +1,27 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="row-fluid"><a href="{{base_url()}}admin/mysql_backup" class="btn btn-info">Create New Backup</a></div>
+<div class="table_head"><h6><i class="icon-th"></i>backups</h6></div>
+<table class="table table-condensed table-bordered table-striped" id="datatables">
+    <thead>
+        <tr>            
+            <td>Date</td>            
+            <th>Info</th>            
+            <th>Action</th>                       
+        </tr>
+    </thead>
+    <tbody>
+        {% for backup in backups %}
+            {% set filename = explode("_", backup) %}
+            <tr>    
+                <td>{{str_replace('.zip', '', filename.1)}}</td>
+                <td>{{str_replace('-', ' ', filename.0)}}</td>                           
+                
+                <td><a href="{{ base_url()}}admin/mysql_download/{{backup}}" class="btn btn-mini">Download</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>    
+    </table>          
+{% endblock %}

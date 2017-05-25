@@ -1,0 +1,55 @@
+{% extends "_layouts/application.html.twig" %}
+{% block title %}{{title}}{% endblock %}
+{% block content %} 
+<div class="row-fluid">    
+    <div class="row-fluid">
+        
+        <div class="row-fluid">{{validation_errors()|raw}}</div>
+        <form action="{{action}}" method="post"enctype="multipart/form-data">
+    {% if user %}<input type="hidden" name="id" value="{{user.id }}" />{% endif %}
+                <div class="row-fluid">
+                    <div class="span6 offset3">
+                        <fieldset>
+                            <legend>User Detail</legend>
+
+                            <p>
+                                <label for="name">Name *</label>
+                                <input type="text" name="name" id="name" placeholder="Full Name" value="{% if user %}{{user.name}}{% else %}{{set_value('name')}}{% endif %}" class="input-block-level" required>
+                            </p>
+                            <p>
+                                <label for="email">Email *</label>
+                                <input type="email" name="email" id="email" placeholder="Email" value="{% if user %}{{user.email}}{% else %}{{set_value('email')}}{% endif %}" class="input-block-level" required>
+                            </p>
+                            <p>
+                                <label for="password">Password *</label>
+                                <input type="password" name="password" id="password" placeholder="Password" value="" class="input-block-level" >
+                            </p>
+                            <p>
+                                <label for="confirm_password">Confirm Password *</label>
+                                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" value="" class="input-block-level">
+                            </p>
+                            
+                            <p>
+                                <label for="group_id">Group *</label>
+                                <select name="group_id" class="input-block-level">
+									<option value="1">User</option>
+									<option value="2">Admin</option>
+                                </select>
+                            </p>
+                            <p>
+                                <label for="confirm_email">Status *</label>
+                                <select name="status" class="input-block-level" required>
+                                    <option value="">Status</option>
+                                    {% for key,value in status %}
+                                    <option value="{{key}}" {% if user.status == key or set_value('status') == key %} selected {% endif %} >{{value}}</option>
+                                    {% endfor %}
+                                </select>
+                            </p>
+                            <p><input type="submit" value="Save" class="btn btn-success" /></p>
+                        </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
